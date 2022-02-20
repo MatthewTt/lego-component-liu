@@ -69,8 +69,11 @@ const editor: Module<EditorProps, GlobalDataProps> = {
                 update.props[key] = value
             }
         },
-        test(state,n) {
-            state.testJson.name.last = n
+        removeActive(state) {
+            const current = state.components.findIndex(item => item.id === state.currentElement)
+            if (current) {
+                state.components.splice(current, 1)
+            }
         }
     },
     getters: {

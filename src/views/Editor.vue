@@ -12,6 +12,7 @@
               :key="component.id"
               :id="component.id"
               @setActive="setActive"
+              @removeActive="removeActive"
               :active="component.id === (currentElement && currentElement.id)"
           >
             <component
@@ -52,6 +53,9 @@ const setActive = (id: string) => {
 const componentChange = (val: any) => {
   store.commit('updateComponent', val)
 }
+const removeActive = () => {
+  store.commit('removeActive')
+}
 
 </script>
 
@@ -62,5 +66,6 @@ const componentChange = (val: any) => {
 
 .content-container {
   position: relative;
+  padding: 20px;
 }
 </style>
