@@ -1,14 +1,21 @@
 import { TextDefaultProps } from "@/defaultProps";
-import { h, VNode } from "vue";
+import { FunctionalComponent, h, VNode } from "vue";
+import { BoldOutlined } from "@ant-design/icons-vue";
+import { AntdIconProps } from "@ant-design/icons-vue/lib/components/AntdIcon";
+import IconSwitch from "@/components/IconSwitch.vue";
+
 
 export interface PropToForm {
-    component: string;
+    component: string | any;
     subComponent?: string;
     extraProps?: { [key: string]: any };
     text?: string;
     options?: { text: string | VNode; value: any }[];
+    // 传递给组件的值
     initialTransForm?: (val: any) => any;
+    // 给html样式加的内容
     afterTransForm?: (val: any) => any;
+    // 自定义组件需要的值，props
     valueProp?: string;
     eventName?: string;
 }
@@ -33,8 +40,8 @@ const fontFamilyArr = [
 const fontFamilOptions = fontFamilyArr.map(font => {
     return {
         value: font.value,
-        // text: h('span',{style: font.value}, font.text)
-        text: <span style={{fontFamily: font.value}}>{font.text}</span> as VNode
+        text: h('span',{style: font.value}, font.text)
+        // text: <span style={{ fontFamily: font.value }}>{font.text}</span> as VNode
     }
 })
 
@@ -89,5 +96,50 @@ export const mapPropsToForm: PropsToForm = {
             { text: '无', value: '' },
             ...fontFamilOptions
         ]
+    },
+    fontWeight: {
+        component: IconSwitch,
+        extraProps: {
+            iconName: 'BoldOutlined',
+            tip: '加粗'
+        },
+        options: [{ value: '', text: '' }],
+        valueProp: 'checked',
+        initialTransForm: (val: string) => {
+            return val === 'bold'
+        },
+        afterTransForm(e) {
+            return e ? 'bold' : 'normal'
+        }
+    },
+    fontStyle: {
+        component: IconSwitch,
+        extraProps: {
+            iconName: 'ItalicOutlined',
+            tip: '斜体'
+        },
+        options: [{ value: '', text: '' }],
+        valueProp: 'checked',
+        initialTransForm: (val: string) => {
+            return val === 'italic'
+        },
+        afterTransForm(e) {
+            return e ? 'italic' : 'normal'
+        }
+    },
+    textDecoration: {
+        component: IconSwitch,
+        extraProps: {
+            iconName: 'underline-outlined',
+            tip: '下划线'
+        },
+        options: [{ value: '', text: '' }],
+        valueProp: 'checked',
+        initialTransForm: (val: string) => {
+            return val === 'underline'
+        },
+        afterTransForm(e) {
+            return e ? 'underline' : 'none'
+        }
     }
 }

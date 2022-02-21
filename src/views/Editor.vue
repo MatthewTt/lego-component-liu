@@ -16,7 +16,7 @@
               :active="component.id === (currentElement && currentElement.id)"
           >
             <component
-                :is="component.name"
+                :is="useComponentList[component.name]"
                 v-bind="component.props"
             />
           </edit-wrapper>
@@ -39,6 +39,7 @@ import ComponentList from "@/components/ComponentList.vue";
 import { textDefaultTemplates as templateList } from "@/defaultTemplates";
 import EditWrapper from "@/components/EditWrapper.vue";
 import PropsTable from "@/components/PropsTable.vue";
+import LText from "@/components/LText.vue";
 
 const store = useStore<GlobalDataProps>()
 const currentElement = computed<ComponentData >(() => store.getters.getCurrentElement)
@@ -55,6 +56,9 @@ const componentChange = (val: any) => {
 }
 const removeActive = () => {
   store.commit('removeActive')
+}
+const useComponentList = {
+  'lText': LText
 }
 
 </script>

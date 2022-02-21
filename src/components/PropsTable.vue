@@ -4,15 +4,17 @@
         v-for="(item,k) in finalProps"
         :key="k"
         class="form-label"
+        :id="`item-${k}`"
+        :class="{'no-text': ['fontWeight', 'fontStyle', 'textDecoration'].includes(k)}"
     >
-      <span>{{ item.text }}:</span>
+      <span v-if="item.text">{{ item.text }}:</span>
       <component
           v-if="item"
           :is="item.component"
           :[item.valueProp]="item.value"
           v-bind="item.extraProps"
           v-on="item.events"
-          class="form-component"
+          :class="['form-component']"
       >
         <template v-if="item.subComponent">
           <component :is="item.subComponent"
@@ -21,7 +23,6 @@
                      :value="option.value"
           >
             <render-vnode :v-node="option.text"></render-vnode>
-<!--            {{ option.text }}-->
           </component>
         </template>
       </component>
@@ -30,12 +31,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineEmits, defineProps, PropType, VNode } from "vue";
+import { computed, defineEmits, defineProps, FunctionalComponent, PropType, VNode } from "vue";
 import { TextDefaultProps } from "@/defaultProps";
 import { reduce } from "lodash";
 import { mapPropsToForm } from "../propsMap";
-import renderVnode from "./renderVnode";
 import RenderVnode from "@/components/renderVnode";
+import { AntdIconProps } from "@ant-design/icons-vue/lib/components/AntdIcon";
 
 
 interface FormProps {
@@ -94,10 +95,19 @@ const finalProps = computed(() => {
   margin-bottom: 10px;
 }
 
-.form-label span {
+.form-label > span {
   width: 28%;
 }
 .form-component {
   width: 70%;
+}
+.form-label.no-text {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
+}
+#item-fontWeight {
+  margin-left: 28%;
 }
 </style>

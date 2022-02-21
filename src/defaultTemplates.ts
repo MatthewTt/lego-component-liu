@@ -7,7 +7,15 @@ export const textDefaultTemplates = [{
     fontFamily: '无'
 }, {
     text: '正文内容',
-    tag: 'p'
+    tag: 'p',
+    fontSize: '14px',
+    fontWeight: 'bold',
+    fontStyle: '',
+    textDecoration: '',
+    fontFamily: '无',
+    lineHeight: '30px',
+    textAlign: 'center',
+
 }, {
     text: '连接内容',
     textDecoration: 'underline',

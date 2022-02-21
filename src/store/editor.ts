@@ -3,7 +3,8 @@ import { Module } from "vuex";
 import { GlobalDataProps } from "@/store/index";
 import lText from "@/components/LText.vue";
 import { TextDefaultProps } from "@/defaultProps";
-import { shallowRef } from "vue";
+import { defineAsyncComponent, shallowRef, toRefs } from "vue";
+import { cloneDeep } from "lodash";
 
 
 export interface ComponentData {
@@ -15,14 +16,11 @@ export interface ComponentData {
 export interface EditorProps {
     components: ComponentData[];
     currentElement: string; // 和id对应
-    testJson: any;
 }
 
-
-const lTextRef = shallowRef(lText);
 export const testEditorList: ComponentData[] = [{
     id: uuidv4(),
-    name: lTextRef,
+    name: 'lText',
     props: {
         text: 'ddsds',
         fontSize: '20px',
@@ -34,7 +32,7 @@ export const testEditorList: ComponentData[] = [{
     }
 }, {
     id: uuidv4(),
-    name: lTextRef,
+    name: 'lText',
     props: {
         text: 'hello2',
         position: 'relative'
@@ -45,17 +43,12 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     state: {
         components: testEditorList,
         currentElement: '',
-        testJson: {
-            name: {
-                last: true
-            }
-        }
     },
     mutations: {
         addComponent(state, props: Partial<TextDefaultProps>) {
             const newComponent = {
                 id: uuidv4(),
-                name: lTextRef,
+                name: 'lText',
                 props
             }
             state.components.push(newComponent)
@@ -64,10 +57,13 @@ const editor: Module<EditorProps, GlobalDataProps> = {
             state.currentElement = currentId
         },
         updateComponent(state, { key, value }) {
-            const update = state.components.find(item => item.id === state.currentElement)
-            if (update) {
-                update.props[key] = value
+            const newState = cloneDeep(state)
+            const index = newState.components.findIndex(item => item.id === newState.currentElement)
+            const current = newState.components[index]
+            if (current) {
+                current.props[key] = value
             }
+            state.components[index] = current
         },
         removeActive(state) {
             const current = state.components.findIndex(item => item.id === state.currentElement)

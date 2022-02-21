@@ -1,6 +1,6 @@
 <template>
   <div class="component-list">
-    <div v-for="(component, index) in list" :key="index" @click="onItemClick(component)">
+    <div v-for="(component) in list" :key="component.id" @click="onItemClick(component)">
       <l-text v-bind="component"></l-text>
     </div>
   </div>
