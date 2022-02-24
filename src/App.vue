@@ -1,10 +1,13 @@
 <template>
-  <div class="app-container">
-    <uploader action="http://localhost:7001/upload" :before-upload="beforeUpload">
-      <template #uploaded="uploadedData">
-        <i>成功了: {{ uploadedData.uploadedData }}</i>
-      </template>
+  <div class="app-container" >
+    <uploader action="http://localhost:7001/upload" :before-upload="beforeUpload" @change="onChange" ref="uploadRef" :auto-upload="false" list-type="picture">
+      <div class="drag-area">
+        <p>click or drag file to this area to upload</p>
+      </div>
     </uploader>
+    <div>
+      <a-button @click="upload">上传</a-button>
+    </div>
     <router-view/>
   </div>
 </template>
@@ -23,19 +26,33 @@
 .app-container {
   height: 100%;
 }
+
 </style>
 <script>
-import Uploader from '@/components/Uploader'
+import Uploader from '@/components/Uploader.vue'
+import { onMounted, ref } from 'vue'
 
 export default {
   components: { Uploader },
   setup() {
+    const uploadRef = ref(null)
     const beforeUpload = (data) => {
       console.log('beforeUpload', data instanceof File)
       return data
     }
+    const onChange = (data) => {
+      console.log(data, 'change')
+    }
+    function upload(){
+      if (uploadRef.value) {
+        uploadRef.value.submit()
+      }
+    }
     return {
-      beforeUpload
+      beforeUpload,
+      onChange,
+      upload,
+      uploadRef
     }
   }
 }
