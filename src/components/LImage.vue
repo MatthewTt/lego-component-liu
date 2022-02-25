@@ -1,5 +1,5 @@
 <template>
-  <img :src="url" :style="styleProps">
+  <img :src="src" :style="styleProps">
 </template>
 
 <script lang="ts">

@@ -35,7 +35,6 @@ const onItemClick = (component: any) => {
   emit('onItemClick', newComponent)
 }
 const uploadChange = (props: UploadImageResp) => {
-  console.log(props, 888)
   getImageOrigin(props.data.url).then(({ width }) => {
     const newComponent: ComponentData = {
       id: uuidv4(),
@@ -43,7 +42,7 @@ const uploadChange = (props: UploadImageResp) => {
       props: imageDefaultProps
     }
     const maxWidth = 870
-    newComponent.props.url = props.data.url
+    newComponent.props.src = props.data.url
     newComponent.props.width = (width > maxWidth ? maxWidth : width) + 'px'
     emit('onItemClick', newComponent)
   })

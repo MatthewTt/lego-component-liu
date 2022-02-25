@@ -10,7 +10,7 @@
       <span v-if="item.text">{{ item.text }}:</span>
       <component
           v-if="item"
-          :is="item.component"
+          :is="componentList[item.component] || item.component"
           :[item.valueProp]="item.value"
           v-bind="item.extraProps"
           v-on="item.events"
@@ -32,11 +32,13 @@
 
 <script lang="ts" setup>
 import { computed, defineEmits, defineProps, FunctionalComponent, PropType, VNode } from "vue";
-import { TextDefaultProps } from "@/defaultProps";
+import { ImageDefaultProps, TextDefaultProps } from "@/defaultProps";
 import { reduce } from "lodash";
-import { mapPropsToForm } from "../propsMap";
+import { AllProps, mapPropsToForm } from "../propsMap";
 import RenderVnode from "@/components/renderVnode";
 import { AntdIconProps } from "@ant-design/icons-vue/lib/components/AntdIcon";
+import IconSwitch from "@/components/IconSwitch.vue";
+import ImageProcesser from "@/components/ImageProcesser.vue";
 
 
 interface FormProps {
@@ -54,7 +56,7 @@ interface FormProps {
 
 const props = defineProps({
   props: {
-    type: Object as PropType<TextDefaultProps>,
+    type: Object as PropType<AllProps>,
     required: true
   }
 })
@@ -62,7 +64,7 @@ const emit = defineEmits(['change']);
 
 const finalProps = computed(() => {
   return reduce(props.props, (result, value, key) => {
-    const newKey = key as keyof TextDefaultProps
+    const newKey = key as keyof AllProps
     const item = mapPropsToForm[newKey]
     if (item) {
       const { valueProp = 'value', eventName = 'change', initialTransForm, afterTransForm } = item
@@ -81,6 +83,10 @@ const finalProps = computed(() => {
     return result
   }, {} as { [key: string]: FormProps })
 })
+const componentList = {
+  'iconSwitch': IconSwitch,
+  'imageProcesser': ImageProcesser
+}
 </script>
 
 <style scoped>

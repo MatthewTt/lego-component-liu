@@ -1,4 +1,4 @@
-import { TextDefaultProps } from "@/defaultProps";
+import { ImageDefaultProps, TextDefaultProps } from "@/defaultProps";
 import { FunctionalComponent, h, VNode } from "vue";
 import { BoldOutlined } from "@ant-design/icons-vue";
 import { AntdIconProps } from "@ant-design/icons-vue/lib/components/AntdIcon";
@@ -20,8 +20,9 @@ export interface PropToForm {
     eventName?: string;
 }
 
+export type AllProps = TextDefaultProps & ImageDefaultProps
 export type PropsToForm = {
-    [P in keyof TextDefaultProps]?: PropToForm
+    [P in keyof AllProps]?: PropToForm
 }
 
 const fontFamilyArr = [
@@ -98,7 +99,7 @@ export const mapPropsToForm: PropsToForm = {
         ]
     },
     fontWeight: {
-        component: IconSwitch,
+        component: 'iconSwitch',
         extraProps: {
             iconName: 'BoldOutlined',
             tip: '加粗'
@@ -113,7 +114,7 @@ export const mapPropsToForm: PropsToForm = {
         }
     },
     fontStyle: {
-        component: IconSwitch,
+        component: 'iconSwitch',
         extraProps: {
             iconName: 'ItalicOutlined',
             tip: '斜体'
@@ -128,7 +129,7 @@ export const mapPropsToForm: PropsToForm = {
         }
     },
     textDecoration: {
-        component: IconSwitch,
+        component: 'iconSwitch',
         extraProps: {
             iconName: 'underline-outlined',
             tip: '下划线'
@@ -141,5 +142,8 @@ export const mapPropsToForm: PropsToForm = {
         afterTransForm(e) {
             return e ? 'underline' : 'none'
         }
+    },
+    src: {
+        component: 'imageProcesser',
     }
 }
