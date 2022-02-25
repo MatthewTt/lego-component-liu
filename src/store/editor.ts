@@ -1,14 +1,13 @@
 import { v4 as uuidv4 } from "uuid";
 import { Module } from "vuex";
 import { GlobalDataProps } from "@/store/index";
-import lText from "@/components/LText.vue";
-import { TextDefaultProps } from "@/defaultProps";
-import { defineAsyncComponent, shallowRef, toRefs } from "vue";
+import { ImageDefaultProps, TextDefaultProps } from "@/defaultProps";
 import { cloneDeep } from "lodash";
 
 
 export interface ComponentData {
-    props: { [key: string]: any }; // 组件各种属性
+    // props: { [key: string]: any } ; // 组件各种属性
+    props: Partial<TextDefaultProps & ImageDefaultProps> & { [key: string]: any };
     id: string; // 组件id，uuid生成
     name: any; // 组件对象
 }
@@ -25,7 +24,7 @@ export const testEditorList: ComponentData[] = [{
         text: 'ddsds',
         fontSize: '20px',
         color: 'red',
-        fontWidth: 'bold',
+        fontWeight: 'bold',
         actionType: 'url',
         url: 'http://baidu.com',
         position: 'relative'
@@ -45,13 +44,8 @@ const editor: Module<EditorProps, GlobalDataProps> = {
         currentElement: '',
     },
     mutations: {
-        addComponent(state, props: Partial<TextDefaultProps>) {
-            const newComponent = {
-                id: uuidv4(),
-                name: 'lText',
-                props
-            }
-            state.components.push(newComponent)
+        addComponent(state, component: ComponentData) {
+            state.components.push(cloneDeep(component))
         },
         setActive(state, currentId: string) {
             state.currentElement = currentId

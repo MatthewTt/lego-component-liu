@@ -1,8 +1,8 @@
 import { computed } from "vue";
 import { pick } from "lodash";
-import { TextDefaultProps } from "@/defaultProps";
+import { CommonDefaultProps, TextDefaultProps } from "@/defaultProps";
 
-const useComponentCommon = (props: Readonly<Partial<TextDefaultProps>>, picks: string[]) => {
+const useComponentCommon = <T extends CommonDefaultProps>(props: Readonly<Partial<T>>, picks: string[]) => {
     const styleProps = computed(() => pick(props, picks))
     const handleClick = () => {
         if (props.actionType === 'url' && props.url) {

@@ -18,7 +18,7 @@
     </template>
     <input type="file" :name="name" style="display: none" ref="fileUploader" :multiple="multiple" :accept="accept"
            @change="handleUploadChange"/>
-    <ul style="padding: 0;">
+    <ul style="padding: 0;" v-if="showFileList">
       <li :class="`upload-file upload-${file.status}`"
           v-for="file in uploadFiles"
           :key="file.uid"
@@ -86,11 +86,15 @@ const props = defineProps({
     default: true
   },
   listType: {
-    type: String,
+    type: String as PropType<FileListType>,
     default: 'text'
+  },
+  showFileList: {
+    type: Boolean,
+    default: true
   }
 });
-const emit = defineEmits(['change']);
+const emit = defineEmits(['change', 'success']);
 const fileUploader = ref<null | HTMLInputElement>(null)
 const uploadFiles = ref<UploadFile[]>([])
 const isDragOver = ref(false)
@@ -118,14 +122,16 @@ function emitChange(option: any) {
 
 function onSuccess(file: UploadFile) {
   const info = {
-    file: file,
-    fileList: uploadFiles
+    // file: file.response,
+    // fileList: uploadFiles
+    ...file.response
   }
-  emitChange(info)
+  emit('success', info)
 }
 
 const onError = (error: any, file: UploadFile) => {
   const info = {
+    type: 'error',
     file: file,
     fileList: uploadFiles
   }
@@ -262,7 +268,7 @@ if (props.drag) {
   }
 }
 
-defineExpose({ submit, a: 'hello' })
+defineExpose({ submit })
 </script>
 
 <style scoped>

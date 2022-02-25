@@ -40,6 +40,8 @@ import { textDefaultTemplates as templateList } from "@/defaultTemplates";
 import EditWrapper from "@/components/EditWrapper.vue";
 import PropsTable from "@/components/PropsTable.vue";
 import LText from "@/components/LText.vue";
+import StyleUploader from "@/components/StyleUploader.vue";
+import LImage from "@/components/LImage.vue";
 
 const store = useStore<GlobalDataProps>()
 const currentElement = computed<ComponentData >(() => store.getters.getCurrentElement)
@@ -58,7 +60,8 @@ const removeActive = () => {
   store.commit('removeActive')
 }
 const useComponentList = {
-  'lText': LText
+  'lText': LText,
+  'lImage': LImage
 }
 
 </script>

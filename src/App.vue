@@ -44,9 +44,7 @@ export default {
       console.log(data, 'change')
     }
     function upload(){
-      if (uploadRef.value) {
-        uploadRef.value.submit()
-      }
+      throw new Error('报错')
     }
     return {
       beforeUpload,

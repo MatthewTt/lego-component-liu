@@ -14,7 +14,7 @@ export default defineComponent({
     ...defaultProps
   },
   setup(props: Partial<TextDefaultProps>) {
-    const { styleProps, handleClick } = useComponentCommon(props, textStyleProps());
+    const { styleProps, handleClick } = useComponentCommon<TextDefaultProps>(props, textStyleProps());
     return {
       styleProps,
       handleClick

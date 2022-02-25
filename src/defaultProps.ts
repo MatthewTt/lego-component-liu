@@ -76,13 +76,21 @@ export const textDefaultProps: TextDefaultProps = {
     ...commonDefaultProps
 }
 
+export interface ImageDefaultProps extends CommonDefaultProps {
+    src: string;
+}
+export const imageDefaultProps: ImageDefaultProps = {
+    src: '',
+    ...commonDefaultProps
+}
 // 获取text的样式属性
 export const textStyleProps = () => without(Object.keys(textDefaultProps), 'actionType', 'url', 'text')
+export const imageStyleProps = () => without(Object.keys(imageDefaultProps), 'actionType', 'url', 'src')
 
-export const transformProps = (props: TextDefaultProps) => {
+export const transformProps = <T extends {}>(props: T) => {
     return mapValues(props, (item) => (
         {
-            type: item.constructor as StringConstructor,
+            type: (item as any).constructor as StringConstructor,
             default: item
         }
     ))
